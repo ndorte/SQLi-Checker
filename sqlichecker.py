@@ -29,11 +29,11 @@ try: # herhangi bir hata için
                 print(url[:-1], "Taranıyor...\n")
                 tampon = url.replace("=", "='") # url'i sql hatası vermeye zorlamak için url'de bulunan = işaretini =' olarak replace ediyoruz ve tampon değişkenimize atıyoruz
                 try: # hatalar için
-                    urlsource = requests.get(tampon) # requests.get ile replace edilen url'e bağlanıyoruz ve urlsource değişkenimize atıyoruz
-                    textecevir = urlsource.text # çekilen tüm içeriği text'e çeviriyoruz
-                    if urlsource.status_code == 200: # eğer bağlandığımızda dönen http kodu 200 ise
+                    urlKaynak = requests.get(tampon) # requests.get ile replace edilen url'e bağlanıyoruz ve urlKaynak değişkenimize atıyoruz
+                    texteCevir = urlKaynak.text # çekilen tüm içeriği text'e çeviriyoruz
+                    if urlKaynak.status_code == 200: # eğer bağlandığımızda dönen http kodu 200 ise
                         for hata in sql_inj: # sql_inj listemizde bulunan hataları tek tek işleme sokuyoruz
-                            if hata in textecevir: # eğer hatamız texte çevirdiğimiz içeriğin içinde varsa
+                            if hata in texteCevir: # eğer hatamız texte çevirdiğimiz içeriğin içinde varsa
                                 print("SQL Injection tespit edildi!\n") # yaz
                                 kontrol += 1 # while döngüsünü kontol etmek için kontrol değişkenimizi 1 artırıyoruz
                                 inj_url += 1 # istatistik için injectable url sayısını 1 artırıyoruz
@@ -41,7 +41,7 @@ try: # herhangi bir hata için
                             else: # eğer hatamız texte çevirdiğimiz içeriğin içinde yoksa
                                 print("Sonuç: Temiz\n") # yaz
                                 kontrol += 1 # while döngüsünü kontol etmek için kontrol değişkenimizi 1 artırıyoruz
-                    elif urlsource.status_code == 500: # eğer bağlandığımızda dönen http kodu 500 ise
+                    elif urlKaynak.status_code == 500: # eğer bağlandığımızda dönen http kodu 500 ise
                         print("Blind SQL var!") # yaz
                         inj_site.append(url+" Blind") # sonuna "Blind" notu ekleyip dosyaya yazılmak üzere inj_site listemize ekliyoruz
                         kontrol += 1 # while döngüsünü kontol etmek için kontrol değişkenimizi 1 artırıyoruz
