@@ -13,17 +13,17 @@ try: # herhangi bir hata için
         try: # herhangi bir hata için
             dosya = open(sys.argv[1]) # 2. argüman'a taranacak url'lerin bulunduğu dosyanın adını giriyoruz
             for i in dosya.readlines(): # kaynak dosyamızın satırlarını okuyoruz
-                urller.append(i) # urller listemize ekliyoruz
+                urller.append(i.strip()) # urller listemize ekliyoruz
             hatalar = open("hatalar","r") # url'lerimizde aranacak sql hataları için hatalar dosyasını açıyoruz
             for e in hatalar.readlines(): # hatalar dosyamızdaki satırları okuyoruz
-                sql_inj.append(e[:-1]) # sql_inj listemize ekliyoruz
+                sql_inj.append(e.strip()) # sql_inj listemize ekliyoruz
         except: # hatalı veya eksik dosyalar için bu hatayı yazdırıyoruz
             mesaj = "\n{} veya hatalar eksik."
             print(mesaj.format(sys.argv[1]))
             quit()
         print("")
         print(len(urller), "URL taranacak.\n")
-        print("Tarama Başladı...", time.strftime('%X'), "\n")
+        print("Tarama başladı...", time.strftime('%X'), "\n")
         while kontrol < len(urller): # while döngümüz taranacak url sayımız kadar devam edecek
             for url in urller: # urller listemizi for döngüsüne sokup tek tek işleme alıyoruz
                 tampon = url.replace("=", "='") # url'i sql hatası vermeye zorlamak için url'de bulunan = işaretini =' olarak replace ediyoruz ve tampon değişkenimize atıyoruz
@@ -33,7 +33,7 @@ try: # herhangi bir hata için
                     if urlKaynak.status_code == 200: # eğer bağlandığımızda dönen http kodu 200 ise
                         for hata in sql_inj: # sql_inj listemizde bulunan hataları tek tek işleme sokuyoruz
                             if hata in texteCevir: # eğer hatamız texte çevirdiğimiz içeriğin içinde varsa
-                                print("SQLi:", url[:-1], "\n")
+                                print("SQLi:", url, "\n")
                                 kontrol += 1 # while döngüsünü kontol etmek için kontrol değişkenimizi 1 artırıyoruz
                                 inj_url += 1 # istatistik için injectable url sayısını 1 artırıyoruz
                                 inj_site.append(url) # dosyaya yazılmak üzere inj_site listemize ekliyoruz
@@ -48,7 +48,7 @@ try: # herhangi bir hata için
                     kontrol += 1 # while döngüsünü kontol etmek için kontrol değişkenimizi 1 artırıyoruz
                     hatali_url += 1 # istatistik için hatali url sayısını 1 artırıyoruz
                     continue # hata alsan bile döngüye devam et
-        print("\nTarama Bitti.", time.strftime('%X'), "\n")
+        print("\nTarama bitti.", time.strftime('%X'), "\n")
         print("{} / {} URL'de SQL Injection bulundu. {} URL hata verdi ve taranamadı." .format(len(urller), inj_url, hatali_url))
         sdosya = open(sys.argv[2], "w")
         sdosya.writelines(inj_site)
