@@ -1,7 +1,7 @@
 import requests, sys, time # program içinde kullanılacak modüllerimiz
 
 # program ve raporlamalar için kullanacağımız değişkenleri oluşturuyoruz
-sql_inj = list() # errors dosyasından okunacak sql hataları bu listeye eklenecek
+sql_inj = list() # hatalar dosyasından okunacak sql hataları bu listeye eklenecek
 urller = list() # dosyadan okunacak url'ler bu listeye dahil edilecek
 inj_site = list() # sql injection tespit edilen url'ler dosyaya yazılmak için bu listede toplanacak
 kontrol = 0 # while döngüsü için kontrol değişkeni
@@ -14,11 +14,11 @@ try: # herhangi bir hata için
             dosya = open(sys.argv[1]) # 2. argüman'a taranacak url'lerin bulunduğu dosyanın adını giriyoruz
             for i in dosya.readlines(): # kaynak dosyamızın satırlarını okuyoruz
                 urller.append(i) # urller listemize ekliyoruz
-            errors = open("errors","r") # url'lerimizde aranacak sql hataları için errors dosyasını açıyoruz
-            for e in errors.readlines(): # errors dosyamızdaki satırları okuyoruz
+            hatalar = open("hatalar","r") # url'lerimizde aranacak sql hataları için hatalar dosyasını açıyoruz
+            for e in hatalar.readlines(): # hatalar dosyamızdaki satırları okuyoruz
                 sql_inj.append(e[:-1]) # sql_inj listemize ekliyoruz
         except: # hatalı veya eksik dosyalar için bu hatayı yazdırıyoruz
-            mesaj = "\n{} veya errors eksik."
+            mesaj = "\n{} veya hatalar eksik."
             print(mesaj.format(sys.argv[1]))
             quit()
         print("")
