@@ -1,3 +1,4 @@
+Warning: mysql_fetch_array()
 error in your SQL syntax
 syntax error at or near
 Unclosed quotation mark after the character
